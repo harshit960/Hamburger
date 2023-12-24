@@ -37,8 +37,8 @@ const mloc = {
 }
 
 
-const axisHelper = new THREE.AxesHelper(5)
-scene.add(axisHelper)
+// const axisHelper = new THREE.AxesHelper(5)
+// scene.add(axisHelper)
 
 const light = new THREE.PointLight(0xffffff, 1000, 500)
 light.position.set(0, 10, 10)
@@ -49,13 +49,14 @@ camera.position.z = 10
 scene.add(camera)
 
 const canvas = document.querySelector(".webgl")
-const renderer = new THREE.WebGLRenderer({ canvas })
+const renderer = new THREE.WebGLRenderer({ canvas, alpha : true },)
 renderer.setSize(sizes.width, sizes.Height)
+renderer.setPixelRatio(2)
 renderer.render(scene, camera)
 
 window.addEventListener("mousemove", () => {
   group.rotation.reorder('YZX')
-  group.rotation.x = -Math.cos((event.clientY/sizes.width)*Math.PI) + Math.PI/8
+  group.rotation.x = -Math.cos((event.clientY/sizes.width)*Math.PI) + Math.PI/6
   group.rotation.y = -Math.cos((event.clientX/sizes.width)*Math.PI)
   console.log()
 
@@ -66,3 +67,47 @@ const loop = () => {
   window.requestAnimationFrame(loop)
 }
 loop()
+
+
+
+
+
+
+
+// UPDATE: I was able to get this working again... Enjoy!
+
+var cursor = document.querySelector('.cursor');
+var cursorinner = document.querySelector('.cursor2');
+var a = document.querySelectorAll('a');
+
+document.addEventListener('mousemove', function(e){
+  var x = e.clientX;
+  var y = e.clientY;
+  cursor.style.transform = `translate3d(calc(${e.clientX}px - 50%), calc(${e.clientY}px - 50%), 0)`
+});
+
+document.addEventListener('mousemove', function(e){
+  var x = e.clientX;
+  var y = e.clientY;
+  cursorinner.style.left = x + 'px';
+  cursorinner.style.top = y + 'px';
+});
+
+document.addEventListener('mousedown', function(){
+  cursor.classList.add('click');
+  cursorinner.classList.add('cursorinnerhover')
+});
+
+document.addEventListener('mouseup', function(){
+  cursor.classList.remove('click')
+  cursorinner.classList.remove('cursorinnerhover')
+});
+
+a.forEach(item => {
+  item.addEventListener('mouseover', () => {
+    cursor.classList.add('hover');
+  });
+  item.addEventListener('mouseleave', () => {
+    cursor.classList.remove('hover');
+  });
+})
